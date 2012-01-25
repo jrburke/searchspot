@@ -55,7 +55,7 @@ function add(results) {
   }
 
   // This should send a height/width adjustment to our main window so the panel can be resized
-  self.port.emit("resize", { "width" : $("#results").width(), "height" : $("#results").height() });
+  self.port.emit("resize", { "width" : $("body").width(), "height" : $("body").height() });
 }
 
 self.port.on("setTerms", function(terms) {
@@ -83,26 +83,26 @@ self.port.on("removeEngine", function(engine) {
 });
 
 function removeEngine(engine) {
-  var id = _convertEngineName(engine.name);
+  var id = _convertEngineName(engine.host);
   $("#" + id).remove();
 }
 
 function createEngine(engine) {
-  var id = _convertEngineName(engine.name);
+  var id = _convertEngineName(engine.host);
   return $("<ul/>").attr({ "id" : id, "class" : "type" })
                   .append(
                     $("<li/>").attr({ "class" : "result default", "title" : engine.description }).
                                css({ "list-style-image" : "url('" + engine.icon + "')" }).
-                               data({ "type" : "suggest", "engine" : engine.name }).
+                               data({ "type" : "suggest", "engine" : encodeURIComponent(engine.host) }).
                                append(
                                   $("<span class='engine'/>").text(engine.name),
                                   $("<span class='dash'/>").html(" &mdash; "),
                                   $("<span class='terms'/>"),
                                   $("<span class='search'/>").text("search")
                                ),
-                    $("<li/>").attr({ "class" : "result" }).data({ "engine" : engine.name }),
-                    $("<li/>").attr({ "class" : "result" }).data({ "engine" : engine.name }),
-                    $("<li/>").attr({ "class" : "result" }).data({ "engine" : engine.name })
+                    $("<li/>").attr({ "class" : "result" }).data({ "engine" : encodeURIComponent(engine.host) }),
+                    $("<li/>").attr({ "class" : "result" }).data({ "engine" : encodeURIComponent(engine.host) }),
+                    $("<li/>").attr({ "class" : "result" }).data({ "engine" : encodeURIComponent(engine.host) })
                   );
 }
 
@@ -118,11 +118,21 @@ function setEngines(engines) {
     $("#results").append(createEngine(engines[engine]));
   }
 
+  $("#results").append($('<ul/>').append(
+                                         $('<li/>').attr({ "id" :"preferences"}).text("Search Preferences...").
+                                         click(function () {
+                                                  self.port.emit("preferences");
+                                                  return false;
+                                              }
+                                          )
+                                        )
+                      );
+
   // set the initial selection class so we have a default option selected
   $("ul:first, .result:first").trigger("mouseover");
 
   // This should send a height/width adjustment to our main window so the panel can be resized
-  self.port.emit("resize", { "width" : $("#results").width(), "height" : $("#results").height() });
+  self.port.emit("resize", { "width" : $("body").width(), "height" : $("body").height() });
 }
 
 self.port.on("next", function() {
@@ -243,13 +253,13 @@ function suggest(id, engine, title, terms) {
 // utility function to make the engine name into a usable id
 // XXX this is not good but works *shrug*
 function _convertEngineName(engineName) {
-  return engineName.replace(/[\s(\)\.]*/g, "_")
+  return encodeURIComponent(engineName).replace(/[%\.'"]*/g, "_")
 }
 
 // utility function to make the search term into a slightly valid title
 // XXX this is not good but works *shrug*
 function _convertTitle(title) {
-  return title.replace(/[\s(\)\.'"]*/g, "_")
+  return encodeURIComponent(title).replace(/[%\.'"]*/g, "_")
 }
 
 
@@ -290,7 +300,7 @@ $(document).ready(function () {
   $(".result").live("click", function() {
     self.port.emit("click", { url : $(this).attr("href"),
                               type : $(this).data("type"),
-                              engine : $(this).data("engine"),
+                              engine : decodeURIComponent($(this).data("engine")),
                               terms : $(this).data("terms") } );
     return false;
   });

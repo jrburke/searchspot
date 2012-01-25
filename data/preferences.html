@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="searchspot-results">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <script type="text/javascript" src="jquery.1.6.4.js"></script>
+  <script type="text/javascript" src="jquery-ui-1.8.17.custom.min.js"></script>
+  <script type="text/javascript">
+  // This is for debugging purposes, these <scripts> are ignored by the panel loader
+  if (!self.port) {
+    self.port = { on : function(signal, callback) { }, emit : function(signal, objects) {}  };
+  }
+  </script>
+  <script type="text/javascript" src="preferences.js"></script>
+
+  <title>searchspot results</title>
+
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        -moz-box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, Sans-serif;
+      font-size: 14px;
+      color: #333;
+    }
+
+    #content {
+      margin: 20px;
+      display: -moz-box;
+      display: -webkit-box;
+      width: 100%:
+    }
+
+    .group {
+      border: 1px solid #ccc;
+      margin: 0 5px;
+      padding: 5px;
+      border-radius: 6px;
+    }
+
+    .ui-state-highlight {
+      height: 48px;
+    }
+    ul {
+      width: 400px;
+    }
+    ul:empty {
+      margin: 10px;
+      padding: 20px;
+      background-color: #eee;
+      width: 300px;
+      border-radius: 6px;
+    }
+    ul:empty:after {
+      color: #666;
+      content: "drop search engines  here";
+    }
+
+    ul, li {
+      list-style: none;
+    }
+
+    li {
+      width: 360px;
+      background-color: #fafafa;
+      padding: 5px 14px 6px;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+      border: 1px solid #ccc;
+      border-bottom-color: #bbb;
+      border-radius: 4px;
+      -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+      -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+      margin: 10px 5px;
+      display: -moz-box;
+      display: -webkit-box;
+      cursor: move;
+    }
+
+    .clearfix {
+      margin-bottom: 18px;
+      zoom: 1;
+    }
+
+    .clearfix:before, .clearfix:after {
+      display: table;
+      content: "";
+      zoom: 1;
+    }
+
+    .clearfix:after {
+      clear: both;
+    }
+
+    img {
+      margin: 5px;
+      vertical-align: middle;
+    }
+
+    .name {
+      margin: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .host {
+      margin: 5px;
+      margin-left: 31px;
+      color: #0066dd;
+      text-decoration: underline;
+    }
+
+    .engine {
+      -webkit-box-flex: 1;
+      -moz-box-flex: 1;
+    }
+
+    .buttons {
+      margin-top: 10px;
+    }
+
+    ._default .btn.add {
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="content">
+    <div class="group">
+      <h2>Your Search Engines</h2>
+      <ul id="_default"></ul>
+    </div>
+    <div class="group">
+      <h2>Other Search Engines</h2>
+      <ul id="_found"></ul>
+    </div>
+      <div id="engines"></div>
+  </div>
+</body>
+</html>
